@@ -3,11 +3,20 @@
 I have a MySunPower system, and I love looking at my data.
 However, the app is not as flexible a I want it to be.
 It only lets you see a graph of energy usage/production between two points in time.
-But I want to answer questions like “how has my usage/production been trending in the month of February over the last several years” or “what is the distribution of usage/production for the hour of 4-5pm” or whatever.
+But I want to answer questions like “how has my usage/production been trending in the month of February over the last several years” or “what is the distribution of usage/production for the hour of 4-5pm” or "how does the last 4 months of usage compare to the same period the previous year".
 
-This repo has some Python functions for interacting with the MySunPower GraphQL API to download data locally and interact with it via `duckdb`.
+Well, here's the result!
 
-## Get Access Token
+![](sunpower-viz/sunpower_avg_daily.png)
+
+This repo contains:
+- Python functions for interacting with the MySunPower GraphQL API to download data locally
+- documentation to interact with data locally via `duckdb`
+- Rill Data dashboards to visualize the data
+
+## Download Data
+
+### Get Access Token
 
 As of writing, I am unsure how to programmatically get the "site key" and access token.
 Sunpower uses an OAuth2 flow to generate a JSON Web Token (jwt) but I'm not exactly sure how it is implemented.
@@ -27,7 +36,7 @@ site_key="<your site key here>"
 
 The token lasts a pretty long time, so this is probably sufficient.
 
-## Environment setup
+### Environment setup
 
 Set up a Python virtual environment and install requirements.
 ```
@@ -36,7 +45,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Download Your Data
+### Run the Download
 
 Modify the timestamps in `get_timeseries_csv.py` and run
 
@@ -46,7 +55,18 @@ python get_timeseries_csv.py
 
 The file will be available at `data/timeseries/sunpower_timeseries.csv`.
 
-## Create a duckdb Database
+### Get Fresh Data
+
+Whenever you want, you can adjust the timestamps in `get_timeseries_csv.py` and `csv` filename and run it again to get a new csv with fresh data since the last import.
+Then copy the data into the `sunpower` table in `duckdb` with
+```sql
+COPY sunpower FROM './data/timeseries/sunpower_<date>_to_<date>.csv' (HEADER);
+```
+Beware of duplicates! Make sure the timeseries don't overlap.
+
+## Run SQL with `duckdb`
+
+### Create a duckdb Database
 
 Install the `duckdb` CLI on your system. For Homebrew users, run
 
@@ -117,7 +137,7 @@ copy (select * from sunpower_monthly) to './data/aggregates/monthly.csv';
 copy (select * from sunpower_yearly) to './data/aggregates/yearly.csv';
 ```
 
-## Run Whatever Analysis You Want
+### Play with `duckdb`
 
 I thought this was interesting.
 
@@ -154,24 +174,39 @@ What are other interesting questions to ask this data?
 - What are the daily averages for each month across years?
 - etc.
 
-## Get Fresh Data
-
-Whenever you want, you can adjust the timestamps in `get_timeseries_csv.py` and `csv` filename and run it again to get a new csv with fresh data since the last import.
-Then copy the data into the `sunpower` table in `duckdb` with
-```sql
-COPY sunpower FROM './data/timeseries/sunpower_<date>_to_<date>.csv' (HEADER);
-```
-Beware of duplicates! Make sure the timeseries don't overlap.
-
-## Exit `duckdb`
+### Exit `duckdb`
 
 Press `Ctrl+D` at any time to exit the `duckdb` CLI shell. Enter again with `duckdb data/sunpower.db`.
+
+## Data Visualization with Rill
+
+I followed the Rill Data [quickstart](https://docs.rilldata.com/get-started) to create a local dashboard.
+
+In the UI, I chose `duckdb` source with this SQL:
+```sql
+select * from read_csv_auto('<path to>/sunpower/data/timeseries/sunpower_timeseries.csv', header = true);
+```
+Rill's local environment apparently uses `duckdb` out of the box!
+
+After you install the `rill` CLI, here is the command to start the UI server:
+```
+rill start sunpower-viz
+```
+And go to http://localhost:9009.
+
+Rill also generated a dashboard using AI, which saved some time getting to a nice dashboard. For example, here is a year over year comparison of the month of January 2024 vs 2023 for total grid usage:
+
+![January 2024 (blue) vs 2023 (grey)](sunpower-viz/jan-2024-2023.png)
+
+A 15% reduction in grid usage year over year!
+
 
 ## Next Steps
 
 - I'd love to hook up Apache Superset, Grafana, or some other data visualization tool to duckdb.
 - Set up orchestrator job to load new data on a schedule (e.g. with Airflow or Prefect)
 - Other ideas?
+
 
 ## Real-Time with Materialize.
 

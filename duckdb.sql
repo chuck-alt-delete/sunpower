@@ -44,11 +44,11 @@ copy (select * from sunpower_yearly) to './data/aggregates/yearly.csv';
 
 -- daily avg per month
 select 
-    month(d),
+    month(day),
     avg(production) production,
     avg(consumption) consumption,
     avg(grid) grid
 from sunpower_daily 
-group by month(d) 
+group by month(day) 
 order by grid;
 

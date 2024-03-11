@@ -1,0 +1,87 @@
+# Visit https://docs.rilldata.com/reference/project-files to learn more about Rill project files.
+# This file was generated using AI.
+
+title: Metrics for Sunpower Table
+table: sunpower
+timeseries: ts
+default_time_range: rill-YTD
+default_comparison:
+  mode: time
+measures:
+  - name: total_grid
+    label: Total Grid Usage
+    expression: SUM(grid)
+    format_preset: humanize
+    valid_percent_of_total: true
+  - name: average_consumption
+    label: Average Consumption
+    expression: AVG(consumption)
+    description: Average value of consumption
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: total_production
+    label: Total Production
+    expression: SUM(production)
+    description: Total sum of production
+    format_preset: humanize
+    valid_percent_of_total: true
+  - name: max_grid_usage
+    label: Max Grid Usage
+    expression: MAX(grid)
+    description: Maximum value of grid usage
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: total_records
+    label: Total Records
+    expression: COUNT(*)
+    description: Total number of records in the table
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: average_production
+    label: Average Production
+    expression: AVG(production)
+    description: Average value of production
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: min_consumption
+    label: Min Consumption
+    expression: MIN(consumption)
+    description: Minimum value of consumption
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: total_consumption
+    label: Total Consumption
+    expression: SUM(consumption)
+    description: Total sum of consumption
+    format_preset: humanize
+    valid_percent_of_total: true
+  - name: max_production
+    label: Max Production
+    expression: MAX(production)
+    description: Maximum value of production
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: average_grid_usage
+    label: Average Grid Usage
+    expression: AVG(grid)
+    description: Average value of grid usage
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: min_grid_usage
+    label: Min Grid Usage
+    expression: MIN(grid)
+    description: Minimum value of grid usage
+    format_preset: humanize
+    valid_percent_of_total: false
+available_time_zones:
+  - America/Los_Angeles
+  - America/Chicago
+  - America/New_York
+  - Europe/London
+  - Europe/Paris
+  - Asia/Jerusalem
+  - Europe/Moscow
+  - Asia/Kolkata
+  - Asia/Shanghai
+  - Asia/Tokyo
+  - Australia/Sydney

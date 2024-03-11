@@ -1,0 +1,40 @@
+# Visit https://docs.rilldata.com/reference/project-files to learn more about Rill project files.
+# This file was generated using AI.
+
+title: Metrics for Daily Average Production and Consumption by Month
+model: daily
+timeseries: day
+default_time_range: rill-YTD
+default_comparison:
+  mode: time
+measures:
+  - name: average_grid
+    label: Average Daily Grid Usage
+    expression: avg(grid)
+    description: The average daily grid usage
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: average_production
+    label: Average Daily Production
+    expression: avg(production)
+    description: The average daily production
+    format_preset: humanize
+    valid_percent_of_total: false
+  - name: average_consumption
+    label: Average Daily Consumption
+    expression: avg(consumption)
+    description: The average daily consumption
+    format_preset: humanize
+    valid_percent_of_total: false
+available_time_zones:
+  - America/Los_Angeles
+  - America/Chicago
+  - America/New_York
+  - Europe/London
+  - Europe/Paris
+  - Asia/Jerusalem
+  - Europe/Moscow
+  - Asia/Kolkata
+  - Asia/Shanghai
+  - Asia/Tokyo
+  - Australia/Sydney
