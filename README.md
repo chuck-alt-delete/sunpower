@@ -147,7 +147,7 @@ order by grid;
 | 12       | 7.298552617112077  | 45.35565785024511  | 38.05710524291192   |
 | 1        | 9.489139803154494  | 48.21580643823711  | 38.72666667590058   |
 
-June is the most efficient month, sending ~10kWh more back to the grid than the next highest month. Production is high and consumption is low. These numbers indicate that most of the usage is seasonal, indicating heat/AC as the main usage.
+June is the most efficient month in terms of average daily net grid usage, sending ~10kWh more back to the grid each day than the next highest month. Production is high and consumption is low. These numbers indicate that most of the usage is seasonal, indicating heat/AC as the main usage.
 
 What are other interesting questions to ask this data?
 - Are there any trends when comparing the same month across years?
