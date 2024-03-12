@@ -1,0 +1,23 @@
+# Visit https://docs.rilldata.com/reference/project-files to learn more about Rill project files.
+
+title: "dashboard"
+table: "monthly"
+timeseries: "month"
+smallest_time_grain: "month"
+default_comparison:
+  mode: dimension
+measures:
+  - label: "Grid Usage"
+    expression: "sum(grid)"
+  - label: "Production"
+    expression: "sum(production)"
+  - label: "Consumption"
+    expression: "sum(consumption)"
+dimensions:
+  - name: month
+    label: Month
+    column: month_number
+available_time_zones:
+  - "UTC"
+  - "America/Los_Angeles"
+  - "America/New_York"

@@ -7,6 +7,10 @@ timeseries: ts
 default_time_range: rill-YTD
 default_comparison:
   mode: time
+default_measures:
+  - total_grid
+  - total_production
+  - total_consumption
 measures:
   - name: total_grid
     label: Total Grid Usage
