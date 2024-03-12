@@ -7,10 +7,6 @@ timeseries: day
 default_time_range: rill-YTD
 default_comparison:
   mode: time
-available_time_ranges:
-  - range: rill-YTD
-    comparison_offsets:
-      - rill-PY
 measures:
   - name: average_grid
     label: Average Daily Grid Usage

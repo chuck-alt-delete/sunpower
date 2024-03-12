@@ -3,7 +3,7 @@ import dotenv
 import os
 import csv
 
-dotenv.load_dotenv('./.env')
+dotenv.load_dotenv('./.env', override=True)
 SITEKEY = os.getenv('site_key')
 TOKEN = os.getenv('token')
 URL = "https://edp-api-graphql.edp.sunpower.com/graphql"
@@ -90,6 +90,10 @@ def get_timeseries(start, end):
     }
 
     response = requests.post(URL, headers=HEADERS, json=query).json()
+    if not response["data"]:
+        print(response)
+        print("You probably need a new token.")
+        raise ValueError
     # combine timeseries for production, consumption, and grid
         # get timestamps and populate consumption.
     timeseries = {reading[0]: {"consumption": reading[1]} for reading in response["data"]["energyRange"]["energyDataSeries"]["consumption"]}
@@ -113,9 +117,10 @@ def get_timeseries(start, end):
     return final_timeseries
 
 def write_timeseries(path, timeseries):
-    with open(path, mode='w', newline='') as file:
+    with open(path, mode='a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=['ts', 'consumption', 'production', 'grid'])
-        writer.writeheader()
+        if os.path.getsize(path) == 0:
+            writer.writeheader()
         for row in timeseries:
             writer.writerow(row)
 
